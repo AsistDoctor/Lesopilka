@@ -10,7 +10,7 @@ public class Log {
     public Log(
                TreeType treeType,
                Diameter diameter,
-               int Length
+               int length
               ){
         this.treeType = treeType;
         this.diameter = diameter;

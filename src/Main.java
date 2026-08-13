@@ -1,8 +1,11 @@
 import models.Log;
+import models.TreeType;
+
 import services.SawMill;
 import services.CsvReader;
 import services.CsvWriter;
 
+import java.util.Map;
 import java.util.List;
 
 public class Main {
@@ -13,8 +16,9 @@ public class Main {
         SawMill sawMill = new SawMill();
 
         List<Log> logs = csvReader.read("input.csv");
-        sawMill.process(logs);
 
+        Map<TreeType, Integer> result = sawMill.process(logs);
 
+        System.out.println(result);
     }
 }
