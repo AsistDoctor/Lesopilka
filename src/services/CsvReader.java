@@ -1,7 +1,9 @@
 package services;
+
 import com.opencsv.CSVReader;
+import exceptions.UnknownTreeTypeException;
 import models.Diameter;
-import models.Log;
+import models.Workpiece;
 import models.TreeType;
 
 import java.io.FileReader;
@@ -9,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CsvReader {
-    public List<Log> read(String path) throws Exception {
 
-        List<Log> logs = new ArrayList<>();
+    private int unknownCount = 0;
+
+    public List<Workpiece> read(String path) throws Exception {
+
+        List<Workpiece> logs = new ArrayList<>();
 
         CSVReader reader = new CSVReader(new FileReader(path));
 
@@ -19,15 +24,37 @@ public class CsvReader {
 
         while ((row = reader.readNext()) != null) {
 
-            Log log = new Log(
-                    TreeType.valueOf(row[0]),
-                    Diameter.valueOf(row[1]),
-                    Integer.parseInt(row[2])
-            );
+            try {
+                Workpiece workpiece = new Workpiece(
+                        parseTreeType(row[0]),
+                        Diameter.valueOf(row[1]),
+                        Integer.parseInt(row[2])
+                );
 
-            logs.add(log);
+                logs.add(workpiece);
+
+            } catch (UnknownTreeTypeException e) {
+                unknownCount++;
+            }
         }
 
+        reader.close();
         return logs;
+    }
+
+    private TreeType parseTreeType(String value) throws UnknownTreeTypeException {
+
+        try {
+            return TreeType.valueOf(value);
+
+        } catch (IllegalArgumentException e) {
+            throw new UnknownTreeTypeException(
+                    "Неизвестная порода дерева: " + value
+            );
+        }
+    }
+
+    public int getUnknownCount() {
+        return unknownCount;
     }
 }

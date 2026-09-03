@@ -1,4 +1,4 @@
-import models.Log;
+import models.Workpiece;
 import models.TreeType;
 
 import services.SawMill;
@@ -15,9 +15,16 @@ public class Main {
         CsvWriter csvWriter = new CsvWriter();
         SawMill sawMill = new SawMill();
 
-        List<Log> logs = csvReader.read("input.csv");
+        List<Workpiece> workpieces = csvReader.read("input.csv");
 
-        Map<TreeType, Integer> result = sawMill.process(logs);
+        Map<TreeType, Integer> result = sawMill.process(workpieces);
+
+        csvWriter.write(result);
+
+        System.out.println(
+                csvReader.getUnknownCount()
+                        + " заготовок неизвестного происхождения и были пропущены"
+        );
 
         System.out.println(result);
     }

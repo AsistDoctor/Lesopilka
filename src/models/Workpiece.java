@@ -1,13 +1,13 @@
 package models;
 
-public class Log {
+public class Workpiece {
 
 
     private int length; //Произвольная длинна в метрах
     private TreeType treeType;
     private Diameter diameter;
 
-    public Log(
+    public Workpiece(
                TreeType treeType,
                Diameter diameter,
                int length

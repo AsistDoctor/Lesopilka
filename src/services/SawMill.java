@@ -1,6 +1,6 @@
     package services;
 
-    import models.Log;
+    import models.Workpiece;
     import models.TreeType;
     import models.Diameter;
 
@@ -18,11 +18,11 @@
             result.put(TreeType.MAPLE, 0);
         }
 
-        public Map<TreeType, Integer> process(List<Log> logs){
+        public Map<TreeType, Integer> process(List<Workpiece> logs){
             // Map<TreeType, List<log>> LogsType = new HashMap<>(); Сначала хотел отдельным циклом собирать Map
 
 
-            for(Log log : logs){
+            for(Workpiece log : logs){
                 TreeType type = log.getTreeType();
                 Diameter diam = log.getDiameter();
                 int leng = log.getLength();
