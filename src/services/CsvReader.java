@@ -15,10 +15,14 @@ import org.slf4j.LoggerFactory;
 
 public class CsvReader {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(CsvReader.class);
+
     private int unknownCount = 0;
 
     public List<Workpiece> read(String path) throws Exception {
 
+        logger.info("Начато чтение файла {}", path);
         List<Workpiece> logs = new ArrayList<>();
 
         CSVReader reader = new CSVReader(new FileReader(path));
@@ -38,6 +42,7 @@ public class CsvReader {
 
             } catch (UnknownTreeTypeException e) {
                 unknownCount++;
+                logger.warn("Неизвестная порода дерева: {}. Заготовка пропущена", row[0]);
             }
         }
 

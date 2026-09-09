@@ -9,7 +9,13 @@
     import java.util.List;
     import java.util.Map;
 
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+
     public class SawMill {
+        private static final Logger logger =
+                LoggerFactory.getLogger(SawMill.class);
+
         protected Map<TreeType, Integer> result = new HashMap<>();
 
         public SawMill() {
@@ -20,7 +26,7 @@
 
         public Map<TreeType, Integer> process(List<Workpiece> logs){
             // Map<TreeType, List<log>> LogsType = new HashMap<>(); Сначала хотел отдельным циклом собирать Map
-
+            logger.info("Начата обработка {} заготовок", logs.size());
 
             for(Workpiece log : logs){
                 TreeType type = log.getTreeType();
@@ -44,6 +50,7 @@
 
                 result.put(type, result.get(type) + quantity);
             }
+            logger.info("Обработка заготовок завершена");
             return result;
         }
     }
