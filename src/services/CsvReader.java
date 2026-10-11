@@ -2,7 +2,7 @@ package services;
 
 import com.opencsv.CSVReader;
 import exceptions.UnknownTreeTypeException;
-import models.Diameter;
+
 import models.Workpiece;
 import models.TreeType;
 
@@ -34,7 +34,7 @@ public class CsvReader {
             try {
                 Workpiece workpiece = new Workpiece(
                         parseTreeType(row[0]),
-                        Diameter.valueOf(row[1]),
+                        Integer.parseInt(row[1]),
                         Integer.parseInt(row[2])
                 );
 

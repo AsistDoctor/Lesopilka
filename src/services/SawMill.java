@@ -4,6 +4,7 @@
     import models.TreeType;
     import models.Diameter;
 
+    import java.util.Optional;
     import java.util.ArrayList;
     import java.util.HashMap;
     import java.util.List;
@@ -30,8 +31,25 @@
 
             for(Workpiece log : logs){
                 TreeType type = log.getTreeType();
-                Diameter diam = log.getDiameter();
+                int actualDiameter = log.getDiameterMm();
                 int leng = log.getLength();
+
+                Optional<Diameter> exactDiameter =
+                        Diameter.fromMillimeters(actualDiameter);
+
+                Diameter diam;
+
+                if (exactDiameter.isPresent()) {
+                    diam = exactDiameter.get();
+                } else {
+                    diam = findClosestDiameter(actualDiameter);
+
+                    logger.warn(
+                            "Диаметр {} мм не задан. Используем ближайший: {} мм",
+                            actualDiameter,
+                            diam.getMillimeters()
+                    );
+                }
 
                 int quantity = leng / 2;
 
@@ -52,5 +70,26 @@
             }
             logger.info("Обработка заготовок завершена");
             return result;
+        }
+        private Diameter findClosestDiameter(int actualDiameter) {
+            Diameter closest = null;
+            long smallestDifference = Long.MAX_VALUE;
+
+            for (Diameter candidate : Diameter.values()) {
+                long difference = Math.abs(
+                        (long) candidate.getMillimeters() - actualDiameter
+                );
+
+                if (difference < smallestDifference
+                        || (difference == smallestDifference
+                        && (closest == null
+                        || candidate.getMillimeters() > closest.getMillimeters()))) {
+
+                    closest = candidate;
+                    smallestDifference = difference;
+                }
+            }
+
+            return closest;
         }
     }
