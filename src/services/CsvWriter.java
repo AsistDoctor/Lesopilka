@@ -9,10 +9,11 @@ import java.util.Map;
 
 public class CsvWriter {
 
-    public void write(Map<TreeType, Integer> result) throws IOException {
+    public void write(Map<TreeType, Integer> result, String path)
+            throws IOException {
 
         CSVWriter writer = new CSVWriter(
-                new FileWriter("result.csv")
+                new FileWriter(path)
         );
 
         for (Map.Entry<TreeType, Integer> entry : result.entrySet()) {

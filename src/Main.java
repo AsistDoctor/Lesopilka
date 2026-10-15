@@ -1,31 +1,36 @@
 import models.Workpiece;
-import models.TreeType;
-
-import services.SawMill;
 import services.CsvReader;
-import services.CsvWriter;
+import services.ParallelProcessingService;
 
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
         CsvReader csvReader = new CsvReader();
-        CsvWriter csvWriter = new CsvWriter();
-        SawMill sawMill = new SawMill();
 
         List<Workpiece> workpieces = csvReader.read("input.csv");
 
-        Map<TreeType, Integer> result = sawMill.process(workpieces);
+        List<List<Workpiece>> groups = new ArrayList<>();
+        int groupSize = 2;
 
-        csvWriter.write(result);
+        for (int i = 0; i < workpieces.size(); i += groupSize) {
+            int end = Math.min(i + groupSize, workpieces.size());
+
+            groups.add(
+                    new ArrayList<>(workpieces.subList(i, end))
+            );
+        }
+
+        ParallelProcessingService parallelService =
+                new ParallelProcessingService();
+
+        parallelService.processGroups(groups);
 
         System.out.println(
                 csvReader.getUnknownCount()
                         + " заготовок неизвестного происхождения и были пропущены"
         );
-
-        System.out.println(result);
     }
 }
