@@ -17,17 +17,16 @@
         private static final Logger logger =
                 LoggerFactory.getLogger(SawMill.class);
 
-        protected Map<TreeType, Integer> result = new HashMap<>();
-
-        public SawMill() {
-            result.put(TreeType.OAK, 0);
-            result.put(TreeType.PINE, 0);
-            result.put(TreeType.MAPLE, 0);
-        }
 
         public Map<TreeType, Integer> process(List<Workpiece> logs){
             // Map<TreeType, List<log>> LogsType = new HashMap<>(); Сначала хотел отдельным циклом собирать Map
             logger.info("Начата обработка {} заготовок", logs.size());
+
+            Map<TreeType, Integer> result = new HashMap<>();
+
+            result.put(TreeType.OAK, 0);
+            result.put(TreeType.PINE, 0);
+            result.put(TreeType.MAPLE, 0);
 
             for(Workpiece log : logs){
                 TreeType type = log.getTreeType();
